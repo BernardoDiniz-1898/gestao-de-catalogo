@@ -4,19 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Equipamentos extends Model
+class Equipamento extends Model
 {
     protected $fillable = [
-        'nome',
-        'modelo',
-        'fabricante',
-        'numero_serie',
-        'localizacao',
-        'valor_estimado',
-        'status'
+        'user_id', 'nome', 'modelo', 'fabricante', 'numero_serie',
+        'data_aquisicao', 'status', 'valor_estimado', 'localizacao', 'descricao'
     ];
 
-    protected $casts = [
-        'data_aquisicao' => 'date',
-    ];
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
