@@ -2,64 +2,81 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Equipamentos;
+use App\Models\Equipamento;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class EquipamentosController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $equipamentos = Equipamento::where('user_id', Auth::id())->latest()->get();
+        return view('equipamentos.index', compact('equipamentos'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        return view('equipamentos.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $validatedData['user_id'] = Auth::id();
+
+        $validatedData = $request->validate([
+            'nome' => 'required|string|max:100',
+            'modelo' => 'nullable|string|max:50',
+            'fabricante' => 'nullable|string|max:50',
+            'numero_serie' => 'nullable|string|max:50|unique:equipamentos,numero_serie' . $equipamentos->id(),
+            'data_aquisicao' => 'nullable|date',
+            'status' => 'nullable|in:Ativo,Manutenção,Inativo,Disponível',
+            'valor_estimado' => 'nullable|numeric|min:0',
+            'localizacao' => 'nullable|string|max:255',
+            'descricao' => 'nullable|string',
+        ]);
+
+        if (!isset($validatedData['status'])) {
+            $validatedData['status'] = 'Disponível';
+        }
+        Equipamento::create($validatedData);
+
+        return redirect()
+            ->route('equipamentos.index')
+            ->with('success', 'Equipamento cadastrado com sucesso!');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Equipamentos $equipamentos)
+    public function edit(Equipamento $equipamentos)
     {
-        //
+        if ($equipamentos->user_id !== Auth::id())
+            abort(403, 'Acesso Negado.');
+        return view('equipamentos.edit', compact('equipamentos'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Equipamentos $equipamentos)
+    public function update(Request $request, Equipamento $equipamentos)
     {
-        //
+        if ($equipamentos->user_id !== Auth::id())
+            abort(403, 'Acesso Negado.');
+        $validatedData = $request->validate([
+            'nome' => 'required|string|max:100',
+            'modelo' => 'nullable|string|max:50',
+            'fabricante' => 'nullable|string|max:50',
+            'numero_serie' => 'nullable|string|max:50|unique:equipamentos,numero_serie',
+            'data_aquisicao' => 'nullable|date',
+            'status' => 'nullable|in:Ativo,Manutenção,Inativo,Disponível',
+            'valor_estimado' => 'nullable|numeric|min:0',
+            'localizacao' => 'nullable|string|max:255',
+            'descricao' => 'nullable|string',
+        ]);
+
+        $equipamentos->update($validatedData);
+        return redirect()->route('equipamentos.index');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Equipamentos $equipamentos)
+    public function destroy(Equipamento $equipamentos)
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Equipamentos $equipamentos)
-    {
-        //
+        if ($equipamentos->user_id !== Auth::id())
+            abort(403, 'Acesso negado.');
+        $equipamentos->delete();
+        return redirect()->route('equipamentos.index');
     }
 }
