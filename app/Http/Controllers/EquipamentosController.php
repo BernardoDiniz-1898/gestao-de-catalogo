@@ -21,19 +21,19 @@ class EquipamentosController extends Controller
 
     public function store(Request $request)
     {
-        $validatedData['user_id'] = Auth::id();
-
         $validatedData = $request->validate([
             'nome' => 'required|string|max:100',
             'modelo' => 'nullable|string|max:50',
             'fabricante' => 'nullable|string|max:50',
-            'numero_serie' => 'nullable|string|max:50|unique:equipamentos,numero_serie' . $equipamentos->id(),
+            'numero_serie' => 'nullable|string|max:50|unique:equipamentos,numero_serie',
             'data_aquisicao' => 'nullable|date',
             'status' => 'nullable|in:Ativo,Manutenção,Inativo,Disponível',
             'valor_estimado' => 'nullable|numeric|min:0',
             'localizacao' => 'nullable|string|max:255',
             'descricao' => 'nullable|string',
         ]);
+
+        $validatedData['user_id'] = Auth::id();
 
         if (!isset($validatedData['status'])) {
             $validatedData['status'] = 'Disponível';
@@ -60,7 +60,7 @@ class EquipamentosController extends Controller
             'nome' => 'required|string|max:100',
             'modelo' => 'nullable|string|max:50',
             'fabricante' => 'nullable|string|max:50',
-            'numero_serie' => 'nullable|string|max:50|unique:equipamentos,numero_serie',
+            'numero_serie' => 'nullable|string|max:50|unique:equipamentos,numero_serie,' . $equipamentos->id,
             'data_aquisicao' => 'nullable|date',
             'status' => 'nullable|in:Ativo,Manutenção,Inativo,Disponível',
             'valor_estimado' => 'nullable|numeric|min:0',
