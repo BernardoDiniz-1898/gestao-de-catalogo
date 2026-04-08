@@ -22,5 +22,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
     // CRUD de Equipamentos
-    Route::resource('equipamentos', EquipamentosController::class);
+    // routes/web.php
+    Route::resource('equipamentos', EquipamentosController::class)->parameters([
+        'equipamentos' => 'equipamentos'
+    ]);
 });
