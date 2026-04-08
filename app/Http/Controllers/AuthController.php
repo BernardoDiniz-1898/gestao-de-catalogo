@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    // --- LOGIN ---
     public function showLogin()
     {
         return view('auth.login');
@@ -30,7 +29,6 @@ class AuthController extends Controller
         return back()->withErrors(['email' => 'Credenciais inválidas.'])->onlyInput('email');
     }
 
-    // --- REGISTER ---
     public function showRegister()
     {
         return view('auth.register');
@@ -55,7 +53,6 @@ class AuthController extends Controller
         return redirect()->route('equipamentos.index')->with('success', 'Conta criada com sucesso!');
     }
 
-    // --- LOGOUT ---
     public function logout(Request $request)
     {
         Auth::logout();
