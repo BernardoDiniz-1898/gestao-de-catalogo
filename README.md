@@ -1,58 +1,78 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 📦 Gestão de Catálogo de Equipamentos
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Um sistema web desenvolvido em **Laravel** para o controle e gerenciamento de um catálogo de equipamentos. O sistema permite o cadastro de itens, controle de status (Disponível, Inativo, Manutenção, etc.), validação de números de série e vinculação de ativos aos usuários responsáveis.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 🚀 Funcionalidades
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+* **Autenticação e Autorização:** Acesso restrito para usuários cadastrados.
+* **CRUD de Equipamentos:** Cadastro, listagem, edição e exclusão de itens do catálogo.
+* **Validação de Dados:** Bloqueio de números de série duplicados (com exceção inteligente durante a edição).
+* **Proteção de Acesso:** Usuários só podem editar ou excluir os equipamentos que eles mesmos cadastraram.
+* **Carga Inicial (Seeders):** Banco de dados já populado com usuários de teste e um estoque inicial para facilitar a avaliação do sistema.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## 🛠️ Tecnologias Utilizadas
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+* **PHP** (8.1+)
+* **Laravel** (Framework MVC)
+* **MySQL** (Banco de Dados Relacional)
+* **Blade** (Template Engine)
+* **HTML/CSS/JavaScript**
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+## ⚙️ Pré-requisitos
 
-## Agentic Development
+Antes de começar, você precisará ter instalado em sua máquina as seguintes ferramentas:
+* [Git](https://git-scm.com)
+* [PHP](https://www.php.net/)
+* [Composer](https://getcomposer.org/)
+* Servidor MySQL (XAMPP, Laragon, Docker, etc.)
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+---
 
+## 📥 Como instalar e rodar o projeto localmente
+
+**1. Clone o repositório**
 ```bash
-composer require laravel/boost --dev
+git clone [https://github.com/SEU-USUARIO/NOME-DO-REPOSITORIO.git](https://github.com/SEU-USUARIO/NOME-DO-REPOSITORIO.git)
+cd NOME-DO-REPOSITORIO
 
-php artisan boost:install
-```
+2. Instale as dependências do PHP
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+Bash
+composer install
+3. Configure o arquivo de ambiente
+Faça uma cópia do arquivo .env.example e renomeie para .env:
 
-## Contributing
+Bash
+cp .env.example .env
+4. Gere a chave da aplicação
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Bash
+php artisan key:generate
+5. Configure o Banco de Dados
+Abra o arquivo .env e preencha as credenciais do seu banco de dados MySQL:
 
-## Code of Conduct
+Snippet de código
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=gestao_catalogo
+DB_USERNAME=seu_usuario
+DB_PASSWORD=sua_senha
+(Lembre-se de criar um banco de dados vazio chamado gestao_catalogo no seu MySQL antes do próximo passo).
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+6. Execute as Migrations e Seeders
+Este comando vai criar todas as tabelas e inserir a carga inicial de dados (Usuários e Equipamentos):
 
-## Security Vulnerabilities
+Bash
+php artisan migrate:fresh --seed
+7. Inicie o servidor local
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Bash
+php artisan serve
+Acesse no seu navegador: http://localhost:8000
